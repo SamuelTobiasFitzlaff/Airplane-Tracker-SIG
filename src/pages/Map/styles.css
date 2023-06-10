@@ -1,0 +1,24 @@
+.marker-text {
+  display: none;
+  font-family: system-ui;
+  fill: #fff;
+  font-size: 0.5rem;
+  z-index: 100;
+}
+
+.marker:hover .marker-text {
+  display: block;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  font-size: 12rem;
+  color: #fff;
+}

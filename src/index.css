@@ -1,0 +1,12 @@
+body {
+  overflow: hidden;
+  background-color: rgb(65, 69, 75);
+}
+
+path:focus {
+  outline: none;
+}
+
+button {
+  cursor: pointer;
+}
