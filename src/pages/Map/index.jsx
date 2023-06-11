@@ -6,6 +6,7 @@ import {
 } from "react-simple-maps";
 import { useState, useEffect } from "react";
 import axios from "axios";
+
 import "./styles.css";
 import dataJun10 from "../../json/dataJun10.json";
 
@@ -16,6 +17,9 @@ const Map = () => {
   const [scale, setScale] = useState(300);
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const country = urlParams.get("country");
 
   const filterStatesByCountry = (states, country) => {
     return states
@@ -32,6 +36,7 @@ const Map = () => {
   };
 
   const fetchData = async () => {
+    const searchCountry = country ? country : "Brazil";
     try {
       setIsLoading(true);
       const response = await axios.get(
@@ -39,18 +44,14 @@ const Map = () => {
       );
 
       setIsLoading(false);
-      setData(filterStatesByCountry(response.data.states, "Brazil"));
+      setData(filterStatesByCountry(response.data.states, searchCountry));
     } catch (error) {
       setIsLoading(false);
-      setData(filterStatesByCountry(dataJun10.states, "Brazil"));
+      setData(filterStatesByCountry(dataJun10.states, searchCountry));
       alert(error.response.data);
       console.error("Error fetching data:", error);
     }
   };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   const handleKeyDown = (event) => {
     const { key } = event;
@@ -92,6 +93,10 @@ const Map = () => {
     setRotation(newRotation);
     setScale(newScale);
   };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <>
@@ -150,9 +155,13 @@ const Map = () => {
           alt="Loading..."
         />
       )}
-      <button className="reload-button" onClick={fetchData}>
-        Reload
-      </button>
+      <div className="form-container">
+        <form>
+          <input type="text" name="country" placeholder="País..." />
+          <button type="submit">{">"}</button>
+        </form>
+        <button onClick={fetchData}>Reload</button>
+      </div>
     </>
   );
 };
