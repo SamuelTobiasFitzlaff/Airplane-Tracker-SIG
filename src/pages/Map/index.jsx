@@ -11,7 +11,7 @@ import dataJun10 from "../../json/dataJun10.json";
 
 const geoUrl = "/countries.json";
 
-function Map() {
+const Map = () => {
   const [rotation, setRotation] = useState([58, 20, 0]);
   const [scale, setScale] = useState(300);
   const [data, setData] = useState(null);
@@ -153,7 +153,13 @@ function Map() {
             </Marker>
           ))}
       </ComposableMap>
-      {isLoading && <div className="loading-container">Carregando...</div>}
+      {isLoading && (
+        <img
+          className="loading-container"
+          src={`/loading-svgrepo-com.svg`}
+          alt="Loading..."
+        />
+      )}
       <button
         style={{ position: "absolute", top: "0.5rem", left: "0.5rem" }}
         onClick={fetchData}
@@ -162,6 +168,6 @@ function Map() {
       </button>
     </>
   );
-}
+};
 
 export default Map;

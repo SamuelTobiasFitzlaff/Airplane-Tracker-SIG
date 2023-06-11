@@ -11,14 +11,20 @@
 }
 
 .loading-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   position: absolute;
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
-  font-size: 12rem;
-  color: #fff;
+  margin: auto;
+  animation: spin 1s linear infinite; /* Adjust the animation duration as needed */
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
