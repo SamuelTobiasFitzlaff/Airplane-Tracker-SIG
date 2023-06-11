@@ -17,6 +17,20 @@ const Map = () => {
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
+  const filterStatesByCountry = (states, country) => {
+    return states
+      .filter((state) => state[2] === country)
+      .map((state) => {
+        const [name, , , , lastContact, lat, lon, , , , rot] = state;
+        return {
+          name,
+          coordinates: [lat, lon],
+          rotation: rot,
+          lastContact: lastContact,
+        };
+      });
+  };
+
   const fetchData = async () => {
     try {
       setIsLoading(true);
@@ -25,34 +39,10 @@ const Map = () => {
       );
 
       setIsLoading(false);
-      setData(
-        response.data.states
-          .filter((state) => state[2] === "Brazil")
-          .map((state) => {
-            const [name, , , , lastContact, lat, lon, , , , rot] = state;
-            return {
-              name,
-              coordinates: [lat, lon],
-              rotation: rot,
-              lastContact: lastContact,
-            };
-          })
-      );
+      setData(filterStatesByCountry(response.data.states, "Brazil"));
     } catch (error) {
       setIsLoading(false);
-      setData(
-        dataJun10.states
-          .filter((state) => state[2] === "Brazil")
-          .map((state) => {
-            const [name, , , , lastContact, lat, lon, , , , rot] = state;
-            return {
-              name,
-              coordinates: [lat, lon],
-              rotation: rot,
-              lastContact: lastContact,
-            };
-          })
-      );
+      setData(filterStatesByCountry(dataJun10.states, "Brazil"));
       alert(error.response.data);
       console.error("Error fetching data:", error);
     }
