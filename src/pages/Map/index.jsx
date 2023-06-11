@@ -150,10 +150,7 @@ const Map = () => {
           alt="Loading..."
         />
       )}
-      <button
-        style={{ position: "absolute", top: "0.5rem", left: "0.5rem" }}
-        onClick={fetchData}
-      >
+      <button className="reload-button" onClick={fetchData}>
         Reload
       </button>
     </>
