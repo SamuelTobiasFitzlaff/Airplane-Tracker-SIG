@@ -4,7 +4,7 @@ import {
   Geography,
   Marker,
 } from "react-simple-maps";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 
 import "./styles.css";
@@ -17,6 +17,8 @@ const Map = () => {
   const [scale, setScale] = useState(300);
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  const mapContainerRef = useRef(null);
 
   const urlParams = new URLSearchParams(window.location.search);
   const country = urlParams.get("country");
@@ -95,18 +97,23 @@ const Map = () => {
   };
 
   useEffect(() => {
+    mapContainerRef.current.focus();
     fetchData();
   }, []);
 
   return (
-    <>
+    <div
+      className="container"
+      tabIndex={1}
+      ref={mapContainerRef}
+      onKeyDown={handleKeyDown}
+    >
       <ComposableMap
         projection="geoAzimuthalEqualArea"
         projectionConfig={{
           rotate: rotation,
           scale: scale,
         }}
-        onKeyDown={handleKeyDown}
         transform="translate(0, -225)"
       >
         <Geographies geography={geoUrl}>
@@ -162,7 +169,7 @@ const Map = () => {
         </form>
         <button onClick={fetchData}>Reload</button>
       </div>
-    </>
+    </div>
   );
 };
 
