@@ -59,7 +59,7 @@ const Map = () => {
     try {
       setIsLoading(true);
       const response = await axios.get(
-        "https://opensy-network.org/api/states/all"
+        "https://opensky-network.org/api/states/all"
       );
 
       setIsLoading(false);
