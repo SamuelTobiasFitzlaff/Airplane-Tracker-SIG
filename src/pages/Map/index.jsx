@@ -19,6 +19,7 @@ const Map = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const [planeAmount, setPlaneAmount] = useState(0);
+  const [averageSpeed, setAverageSpeed] = useState(0);
 
   const mapContainerRef = useRef(null);
 
@@ -36,9 +37,21 @@ const Map = () => {
           coordinates: [lat, lon],
           rotation,
           lastContact: lastContact,
-          velocity,
+          velocity: (velocity * 3.6).toFixed(2),
         };
       });
+  };
+
+  const handleSetData = (states, country) => {
+    const newData = filterStatesByCountry(states, country);
+    setData(newData);
+    setPlaneAmount(newData.length);
+
+    const totalSpeed = newData.reduce((sum, state) => {
+      return sum + parseFloat(state.velocity);
+    }, 0);
+    const averageSpeed = (totalSpeed / newData.length).toFixed(2);
+    setAverageSpeed(averageSpeed);
   };
 
   const fetchData = async () => {
@@ -50,17 +63,10 @@ const Map = () => {
       );
 
       setIsLoading(false);
-      const newData = filterStatesByCountry(
-        response.data.states,
-        searchCountry
-      );
-      setData(newData);
-      setPlaneAmount(newData.length);
+      handleSetData(response.data.states, searchCountry);
     } catch (error) {
       setIsLoading(false);
-      const newData = filterStatesByCountry(dataJun10.states, searchCountry);
-      setData(newData);
-      setPlaneAmount(newData.length);
+      handleSetData(dataJun10.states, searchCountry);
       alert(error.response.data);
       console.error("Error fetching data:", error);
     }
@@ -164,7 +170,7 @@ const Map = () => {
                 {new Date(lastContact * 1000).toLocaleString()}
               </text>
               <text className="marker-text" textAnchor="middle" y={30}>
-                Velocidade: {(velocity * 3.6).toFixed(2)} Km/h
+                Velocidade: {velocity} Km/h
               </text>
             </Marker>
           ))}
@@ -184,6 +190,9 @@ const Map = () => {
         <button onClick={fetchData}>Reload</button>
         <h4>
           Quantidade de aviões em {country}: {planeAmount}
+        </h4>
+        <h4>
+          Velocidade média em {country}: {averageSpeed} Km/h
         </h4>
       </div>
     </div>
