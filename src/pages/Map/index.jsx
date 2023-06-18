@@ -27,7 +27,7 @@ const Map = () => {
 
   const filterStatesByCountry = (states, country) => {
     return states
-      .filter((state) => state[2] === country)
+      .filter((state) => state[2].toUpperCase() === country.toUpperCase())
       .map((state) => {
         const [name, , , , lastContact, lat, lon, , , , rot] = state;
         return {
