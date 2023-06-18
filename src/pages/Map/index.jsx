@@ -29,12 +29,14 @@ const Map = () => {
     return states
       .filter((state) => state[2].toUpperCase() === country.toUpperCase())
       .map((state) => {
-        const [name, , , , lastContact, lat, lon, , , , rot] = state;
+        const [name, , , , lastContact, lat, lon, , , velocity, rotation] =
+          state;
         return {
           name,
           coordinates: [lat, lon],
-          rotation: rot,
+          rotation,
           lastContact: lastContact,
+          velocity,
         };
       });
   };
@@ -139,7 +141,7 @@ const Map = () => {
         </Geographies>
 
         {data &&
-          data.map(({ name, coordinates, rotation, lastContact }) => (
+          data.map(({ name, coordinates, rotation, lastContact, velocity }) => (
             <Marker key={name} className="marker" coordinates={coordinates}>
               <g transform={`translate(-6, -12) rotate(${rotation})`}>
                 <svg
@@ -160,6 +162,9 @@ const Map = () => {
               </text>
               <text className="marker-text" textAnchor="middle" y={20}>
                 {new Date(lastContact * 1000).toLocaleString()}
+              </text>
+              <text className="marker-text" textAnchor="middle" y={30}>
+                Velocidade: {(velocity * 3.6).toFixed(2)} Km/h
               </text>
             </Marker>
           ))}
