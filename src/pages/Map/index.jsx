@@ -18,6 +18,8 @@ const Map = () => {
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
+  const [planeAmount, setPlaneAmount] = useState(0);
+
   const mapContainerRef = useRef(null);
 
   const urlParams = new URLSearchParams(window.location.search);
@@ -42,14 +44,21 @@ const Map = () => {
     try {
       setIsLoading(true);
       const response = await axios.get(
-        "https://opensky-network.org/api/states/all"
+        "https://opensy-network.org/api/states/all"
       );
 
       setIsLoading(false);
-      setData(filterStatesByCountry(response.data.states, searchCountry));
+      const newData = filterStatesByCountry(
+        response.data.states,
+        searchCountry
+      );
+      setData(newData);
+      setPlaneAmount(newData.length);
     } catch (error) {
       setIsLoading(false);
-      setData(filterStatesByCountry(dataJun10.states, searchCountry));
+      const newData = filterStatesByCountry(dataJun10.states, searchCountry);
+      setData(newData);
+      setPlaneAmount(newData.length);
       alert(error.response.data);
       console.error("Error fetching data:", error);
     }
@@ -168,6 +177,9 @@ const Map = () => {
           <button type="submit">{">"}</button>
         </form>
         <button onClick={fetchData}>Reload</button>
+        <h4>
+          Quantidade de aviões em {country}: {planeAmount}
+        </h4>
       </div>
     </div>
   );
