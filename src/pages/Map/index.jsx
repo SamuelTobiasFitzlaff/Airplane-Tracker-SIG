@@ -24,7 +24,9 @@ const Map = () => {
   const mapContainerRef = useRef(null);
 
   const urlParams = new URLSearchParams(window.location.search);
-  const country = urlParams.get("country");
+  const country = urlParams.get("country")
+    ? urlParams.get("country")
+    : "Brazil";
 
   const filterStatesByCountry = (states, country) => {
     return states
@@ -55,7 +57,6 @@ const Map = () => {
   };
 
   const fetchData = async () => {
-    const searchCountry = country ? country : "Brazil";
     try {
       setIsLoading(true);
       const response = await axios.get(
@@ -63,10 +64,10 @@ const Map = () => {
       );
 
       setIsLoading(false);
-      handleSetData(response.data.states, searchCountry);
+      handleSetData(response.data.states, country);
     } catch (error) {
       setIsLoading(false);
-      handleSetData(dataJun10.states, searchCountry);
+      handleSetData(dataJun10.states, country);
       alert(error.response.data);
       console.error("Error fetching data:", error);
     }
