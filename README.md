@@ -26,3 +26,7 @@ O projeto utiliza a API [OpenSky Network](https://openskynetwork.github.io/opens
 ## Demo
 
 Para visualizar o projeto em funcionamento, acesse [trabalho-sig-planes.netlify.app](https://trabalho-sig-planes.netlify.app/)
+
+## Contribuição
+
+Este projeto foi desenvolvido como parte de um trabalho acadêmico e não está aberto para contribuições externas.
